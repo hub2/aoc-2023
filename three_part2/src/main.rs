@@ -54,7 +54,6 @@ fn main() {
                     if !current_number.is_empty() {
                         let current_number_parsed = current_number.parse::<i32>().unwrap();
                         if is_gear {
-                            println!("{}", current_number);
                             let tmp = gear_ratios[gear_index];
 
                             match tmp {
@@ -74,7 +73,6 @@ fn main() {
         }
     }
     for ratio in gear_ratios {
-        print!("{} ", ratio);
         if ratio >= -1 {
             continue;
         }

@@ -5,7 +5,7 @@ use std::path::Path;
 fn main() {
     let lines = read_lines("./input.txt").unwrap();
     let cards: Vec<String> = lines
-        .map(|x| x.unwrap().split(": ").skip(1).take(1).collect::<String>())
+        .map(|x| x.unwrap().split(": ").nth(1).unwrap().into())
         .collect();
 
     let mut copies = vec![1i32; cards.len()];

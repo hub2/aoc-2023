@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{self, BufRead};
+use std::iter::zip;
 use std::path::Path;
-
 fn main() {
     let lines = read_lines("./input.txt").unwrap();
     let cards: Vec<String> = lines
@@ -14,8 +14,8 @@ fn main() {
         .iter()
         .map(|x| {
             x.split(" | ")
-                .take(1)
-                .collect::<String>()
+                .nth(0)
+                .unwrap()
                 .split_whitespace()
                 .map(|k| k.parse::<i32>().unwrap())
                 .collect::<Vec<i32>>()
@@ -25,21 +25,18 @@ fn main() {
         .iter()
         .map(|x| {
             x.split(" | ")
-                .skip(1)
-                .take(1)
-                .collect::<String>()
+                .nth(1)
+                .unwrap()
                 .split_whitespace()
                 .map(|k| k.parse::<i32>().unwrap())
                 .collect::<Vec<i32>>()
         })
         .collect();
-    let answer: i32 = drawn_numbers
-        .iter()
-        .enumerate()
-        .map(|(i, x)| {
+    let answer: i32 = zip(drawn_numbers.clone(), winning_numbers.clone())
+        .map(|(x, y)| {
             let power: i32 = x
                 .iter()
-                .filter(|k| winning_numbers[i].contains(k))
+                .filter(|k| y.contains(k))
                 .count()
                 .try_into()
                 .unwrap();
@@ -53,16 +50,10 @@ fn main() {
 
     print!("{}\n", answer);
 
-    let answer2: i32 = drawn_numbers
-        .iter()
+    let answer2: i32 = zip(drawn_numbers.clone(), winning_numbers.clone())
         .enumerate()
-        .map(|(i, x)| {
-            let power: i32 = x
-                .iter()
-                .filter(|k| winning_numbers[i].contains(k))
-                .count()
-                .try_into()
-                .unwrap();
+        .map(|(i, (x, y))| {
+            let power: usize = x.iter().filter(|k| y.contains(k)).count();
             let current_copies = copies[i];
             copies
                 .iter_mut()

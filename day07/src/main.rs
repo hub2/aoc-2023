@@ -37,9 +37,9 @@ fn evaluate_joker_hand(hand: String) -> Hand {
 
 fn evaluate_hand(hand: String) -> Hand {
     let mut hm = HashMap::new();
-    for c in hand.chars() {
-        hm.entry(c).and_modify(|entry| *entry += 1).or_insert(1);
-    }
+    hand.chars().for_each(|x| {
+        hm.entry(x).and_modify(|entry| *entry += 1).or_insert(1);
+    });
 
     for (_entry, count) in &hm {
         if *count == 5 {
